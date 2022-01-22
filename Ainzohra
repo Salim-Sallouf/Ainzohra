@@ -1,0 +1,839 @@
+tep 1: Preparing your Ubuntu server
+To begin with, you need a cloud server to run the LAMP stack software. If you are new to UpCloud, have a look at our quick started guide for deploying your first cloud server and how to connect to it.
+
+Once you have your cloud server up and running and connect to it using SSH, you can get started!
+
+First of all, ensure everything is up to date on your server:
+
+****sudo apt update****
+**sudo apt upgrade**
+Now open ports 22 (for SSH), 80 and 443 and enable Ubuntu Firewall (ufw):
+
+**sudo ufw allow ssh**
+**sudo ufw allow 80**
+**sudo ufw allow 443**
+**sudo ufw enable**
+Step 2: Installing and testing Apache2
+Install Apache using apt:
+
+**sudo apt install apache2**
+Confirm that Apache is now running with the following command:
+
+**sudo systemctl status apache2** SCREENSHOT MAKEN
+Hier zie je dat apache werkt en dat het actief werkt. De dienst is draaiend  
+You should the get an output showing that the apache2.service is running and enabled.
+
+● apache2.service - The Apache HTTP Server
+     Loaded: loaded (/lib/systemd/system/apache2.service; enabled; vendor preset: enabled)
+     Active: active (running) since Tue 2020-11-03 10:32:26 UTC; 1min 6s ago
+       Docs: https://httpd.apache.org/docs/2.4/
+   Main PID: 52943 (apache2)
+      Tasks: 7 (limit: 2282)
+     Memory: 11.9M
+     CGroup: /system.slice/apache2.service
+             ├─52943 /usr/sbin/apache2 -k start
+             ├─52944 /usr/sbin/apache2 -k start
+             ├─52945 /usr/sbin/apache2 -k start
+             ├─52946 /usr/sbin/apache2 -k start
+             ├─52947 /usr/sbin/apache2 -k start
+             ├─52948 /usr/sbin/apache2 -k start
+             └─52953 /usr/sbin/apache2 -k start
+Once installed, test by accessing your server’s IP in your browser:
+
+**http://YOURSERVERIPADDRESS/** SCREENSHOT MAKEN
+Hier zie je dat de webpage van apache juist werkt en dat apache bereikt kan worden via het ip adress. 
++Conclusie test:
+Werkt de functie zoals verwacht? Indien van niet geef aan wat fout is. 
+-------De functie werkt zoals verwacht, apache is actief en een werkende testpagina.-----
+
+You should see a page with an “Apache2 Ubuntu Default” header showing that Apache2 has been installed successfully. If you do not see this, please ensure that the previous commands in this section have completed without error
+
+
+
+
+
+Step 3: Installing and testing PHP 7.4
+PHP 7.4 is the latest available right now so let’s install that along with some regularly used modules:
+
+**sudo apt install php7.4 php7.4-mysql php-common php7.4-cli php7.4-json php7.4-common php7.4-opcache libapache2-mod-php7.4**
+Check the installation and version:
+
+**php --version**
+Restart Apache for the changes to take effect:
+
+**sudo systemctl restart apache2**
+Create a phpinfo.php test page:
+
+**echo '<?php phpinfo(); ?>' | sudo tee -a /var/www/html/phpinfo.php > /dev/null**
+Test everything is working by accessing the following in your browser:
+
+**http://YOURSERVERIPADDRESS/phpinfo.php** SCREENSHOT MAKEN
+++Hier zie dat php juist werkt en dat het nu juist geïmplementeerd kan worden binnen de server.++
+
+Hoe gaat er getest worden? 
+----Vanuit Linux Ubuntu proberen we PHP te testen met behulp van commando's----
+Welke test-data gaan gebruikt worden? 
+----https://ip adress/info.php ----
+Welk resultaat verwacht je van de functie? 
+----Dat php werkend is.----
+
+Once you’ve confirmed that PHP is working correctly, delete the test file.
+**sudo rm /var/www/html/phpinfo.php**
+The information displayed in the PHP info could be used to find an attack vector against your web server so best not to leave it publicly accessible.
+
+Conclusie test 
+Werkt de functie zoals verwacht? Indien van niet geef aan wat fout is. 
+----Ja de functie werkt zoals verwacht php werkt nu naar behoren waarmee ik nu de functies van php kan gebruiken binnen mijn linux omgeving----
+
+
+
+
+
+
+Step 4: Installing and securing MariaDB
+MariaDB is a fork of MySQL from some of the original MySQL team and is a drop-in replacement. We’ll be using this over MySQL itself in this guide!
+
+Install the required packages:
+
+**sudo apt install mariadb-server mariadb-client**
+Once installed, check it’s running correctly:
+
+**sudo systemctl status mariadb** SCREENSHOT MAKEN
+-----Hier zie je dat de SQL server goed werkt en dat ik nu verder kan gaan met het maken van een database----
+hier beneden staat een voorbeeld hoe het eruit moet zien.
+● mariadb.service - MariaDB 10.3.25 database server
+     Loaded: loaded (/lib/systemd/system/mariadb.service; enabled; vendor preset: enabled)
+     Active: active (running) since Tue 2020-11-03 10:33:12 UTC; 4s ago
+       Docs: man:mysqld(8)
+             https://mariadb.com/kb/en/library/systemd/
+   Main PID: 53554 (mysqld)
+     Status: "Taking your SQL requests now..."
+      Tasks: 31 (limit: 2282)
+     Memory: 65.9M
+     CGroup: /system.slice/mariadb.service
+             └─53554 /usr/sbin/mysqld
+
+Secure your newly installed MariaDB service:
+**sudo mysql_secure_installation**
+Test scenario 
+Hoe gaat er getest worden? 
+----Ik test de functionaliteit van mysql door het te testen met het aanmaken van een database binnen de server waarmee ik later een nextcloud omgeving op te kunnen gebruiken----
+
+Test input 
+Welke test-data gaan gebruikt worden? 
+----Ik gebruik de functionaliteit van de mysql service om te kijken of ik juist een database kan aanmaken daarna gebruik ik de data om een database te bouwen voor nextcloud----
+
+Verwachte werking\output 
+Welk resultaat verwacht je van de functie? 
+----Ik verwacht dat de mysql service juist werkt en dat er bestanden opgeslagen kunnen worden binnen de database----
+conclusie; functie werkt zoals verwacht en bestanden kunnen opgeslagen worden binnen de database.
+
+
+
+
+
+**nexcloud install**
+Test scenario 
+Hoe gaat er getest worden? 
+----Vanuit Linux Ubuntu gaan we nextcloud testen met behulp van commando's----
+
+Test input 
+Welke test-data gaan gebruikt worden? 
+----http://10.0.2.15/nextcloud-----
+
+Verwachte werking\output 
+Welk resultaat verwacht je van de functie? 
+----Dat Nextcloud werkend is en dat nextcloud ervoor zorgt dat de bestanden juist kunnen worden opgeslagen binnen de database.----
+
+What you'll need
+An instance of Ubuntu Server 20.04
+
+A user account with sudo privileges
+
+Note: You can install Nextcloud on distributions other than Ubuntu Server. I prefer Ubuntu because it's one of the most widely used server platforms (it's the most used Linux distribution on Azure) and it's incredibly user-friendly.
+
+How to install the necessary dependencies
+The first thing to be done is the installation of the necessary dependencies. We'll break this into two sections. Log in to your server and access a terminal window. Install the first set of dependencies with the command:
+
+**sudo apt-get install apache2 mysql-server -y**
+When that completes, install the second group of dependencies with the command:
+
+**sudo apt-get install php zip libapache2-mod-php php-gd php-json php-mysql php-curl php-mbstring php-intl php-imagick php-xml php-zip php-mysql php-bcmath php-gmp -y**
+How to secure the MySQL database
+With the dependencies out of the way, the next thing to be taken care of is securing the database server. Back at the terminal window, issue the command:
+
+**sudo mysql_secure_installation**
+Give MySQL a new admin password and answer the remaining questions with y (for yes).
+
+How to create the database
+Now we'll create the Nextcloud database and a database user. Log in to the MySQL console with the command:
+
+**sudo mysql -u root -p**
+Create the new database with the command:
+
+CREATE DATABASE nextcloud;
+Create a new user with the command:
+
+CREATE USER **'nextcloud'@'localhost'** IDENTIFIED BY 'PASSWORD';
+Where PASSWORD is a unique and strong password.
+
+Give the new user the necessary permissions with the command:
+
+GRANT ALL PRIVILEGES ON nextcloud.* TO 'nextcloud'@'localhost';
+Flush the privileges and exit the console with the commands:
+
+**FLUSH PRIVILEGES;**
+exit
+How to download and unpack the Nextcloud file
+In order to install Nextcloud, we have to first download the necessary zipped file. To do that, issue the command:
+
+****wget https://download.nextcloud.com/server/releases/nextcloud-20.0.0.zip****
+Unpack that file with the command:
+
+**unzip nextcloud-20.0.0.zip**
+Move the newly-created nextcloud file to the Apache document root with the command:
+
+**sudo mv nextcloud /var/www/html/**
+Next, we'll give the Nextcloud folder the necessary ownership with the command:
+
+**sudo chown -R www-data:www-data /var/www/html/nextcloud**
+How to configure the web server
+With the Nextcloud directory in place, we now have to make Apache aware of it. For that, we have to create a .conf file with the command:
+
+**sudo nano /etc/apache2/sites-available/nextcloud.conf**
+In that file, paste the following:
+
+**Alias /nextcloud "/var/www/html/nextcloud/"**
+**<Directory /var/www/html/nextcloud/>**
+    Options +FollowSymlinks
+    AllowOverride All
+      <IfModule mod_dav.c>
+        Dav off
+      </IfModule>     
+
+**     SetEnv HOME /var/www/html/nextcloud**
+**    SetEnv HTTP_HOME /var/www/html/nextcloud**
+</Directory>
+Save and close the file. 
+
+Enable the new site with the command:
+
+**sudo a2ensite nextcloud**
+We'll now enable the necessary Apache modules by issuing the command:
+
+**sudo a2enmod rewrite headers env dir mime**
+Finally, we'll change the PHP memory limit with the command:
+
+**sudo sed -i '/^memory_limit =/s/=.*/= 512M/' /etc/php/7.4/apache2/php.ini**
+Restart Apache with the command:
+
+**sudo systemctl restart apache2**
+How to finish the installation
+Your venture into the command line is complete. Now you can open a browser and point it to http://SERVER_IP/nextcloud (where SERVER_IP is the IP address of the hosting server). You'll first be greeted by the web-based installer (Figure A).
+
+
+
+
+
+
+
+
+
+nextcloud
+
+1.	sudo apt-get install apache2 mysql-server -y
+Hiermee installeer je nextcloud
+2.	sudo apt-get install php zip libapache2-mod-php php-gd php-json php-mysql php-curl php-mbstring php-intl php-imagick php-xml php-zip php-mysql php-bcmath php-gmp -y
+hiermee installeer je nextxloud configuratie
+3.	sudo mysql_secure_installation
+dit is voor de secOure
+4.	sudo mysql -u root -p
+5.	CREATE DATABASE nextcloud;
+6.	CREATE USER 'nextcloud'@'localhost' IDENTIFIED BY 'PASSWORD';
+7.	GRANT ALL PRIVILEGES ON nextcloud.* TO 'nextcloud'@'localhost';
+8.	FLUSH PRIVILEGES;
+exit
+9.	wget https://download.nextcloud.com/server/releases/nextcloud-20.0.0.zip
+10.	unzip nextcloud-20.0.0.zip
+11.	sudo mv nextcloud /var/www/html/
+12.	sudo chown -R www-data:www-data /var/www/html/nextcloud
+13.	sudo nano /etc/apache2/sites-available/nextcloud.conf
+14.	in nano onderstaande script invullen
+15.	Alias /nextcloud "/var/www/html/nextcloud/"
+16.	<Directory /var/www/html/nextcloud/>
+17.	Options +FollowSymlinks
+18.	AllowOverride All
+19.	<IfModule mod_dav.c>
+20.	Dav off
+21.	</IfModule>
+22.	SetEnv HOME /var/www/html/nextcloud
+23.	SetEnv HTTP_HOME /var/www/html/nextcloud
+24.	</Directory>
+25.	
+26.	
+27.	sudo a2ensite nextcloud
+28.	sudo a2enmod rewrite headers env dir mime
+29.	sudo sed -i '/^memory_limit =/s/=.*/= 512M/' /etc/php/7.4/apache2/php.ini
+30.	sudo systemctl restart apache2
+
+Overzicht test omgeving 
+Beschrijf hier hoe de testomgeving opgebouwd moet gaan worden. 
+----Je gebruikt  2 virtuele machines om de connectie vsn de twee  servers  te kunnen testen ik gebruik een linux server om de private cloud    op te kunnen hosten  en windows gebruik ik  om een a record aan te maken zodat ik een url kan gebruiken in plaats van een ip address.----
+
+Planning opzet test omgeving 
+Maak hier een planning voor het opzetten van de test omgeving.  
+
+   globale beschriving         uitvoerder    benodigde doorlooptijd  startdatum  einddatum  benodigde/uren   arbeid/kosten  overige/kosten
+1  installeren van Apache2     Salim S             1 dag              26-1-2022  27-1-2022   1 uur            €300
+2  installeren van PHP         Salim S             1 dag              28-1-2022  29-1-2022   30 min           €250       
+3  installeren van MySQL       Salim S             1 dag              29-1-2022  30-1-2022   45 min           €325
+4  installeren van PHPMyAdmin  Salim S             1 dag              31-1-2022  01-2-2022   1 uur            €350
+5  installeren van Nexcloud    Salim S             1 dag              02-2-2022  03-2-2022   1 uur            €400
+
+
+Planning testactiviteiten 
+Maak een overzicht van de testen, plan daarbij wie de test gaat uitvoeren en wanneer en hoeveel tijd ervoor nodig is.  
+
+te testen functionaliteit        tester      wanneer      doorlooptijd test
+Apache                           Salim       26-1-2022         30 min
+PHP                              Salim       28-1-2022         40 min
+MySQL                            Salim       29-1-2022         25 min
+PHPMyAdmin                       Salim       31-1-2022         35 min
+Nextcloud                        Salim       02-2-2022         40 min
+
+Eind conclusie testen 
+Beschrijf hier de conclusie die getrokken kan worden na het uitvoeren van de tests 
+----ik heb voor dit project gebruik gemaakt van 2 verschillende  virtual machines deze twee machines draaiden linux en windows. 
+
+Ik gebruikte linux om een private cloud omgeving op te kunnen zetten om er zo voor te zorgen dat alles beveiligd wordt en voor deze dienst gebruikte ik nextcloud omdat het gratis is en stabiel werkt. 
+
+Ik gebruikte ook windows omdat ik een a record moest aan maken binnen het netwerk van windows om er voor te zorgen dat mensen binnen het netwerk geen ip te laten gebruiken maar een url----
+
+
+
+
+virtual Host aanmaken
+
+sudo mkdir -p /var/www/example.com/public_html
+sudo mkdir -p /var/www/test.com/public_html
+
+sudo chown -R $USER:$USER /var/www/example.com/public_html
+sudo chown -R $USER:$USER /var/www/test.com/public_html
+
+sudo chmod -R 755 /var/www
+
+nano /var/www/example.com/public_html/index.html
+
+<html>
+  <head>
+    <title>Welcome to Example.com!</title>
+  </head>
+  <body>
+    <h1>Success! The example.com virtual host is working!</h1>
+  </body>
+</html>
+
+cp /var/www/example.com/public_html/index.html /var/www/test.com/public_html/index.html
+
+nano /var/www/test.com/public_html/index.html
+
+<html>
+  <head>
+    <title>Welcome to Test.com!</title>
+  </head>
+  <body> <h1>Success! The test.com virtual host is working!</h1>
+  </body>
+</html>
+
+sudo cp /etc/apache2/sites-available/000-default.conf /etc/apache2/sites-available/example.com.conf
+
+sudo nano /etc/apache2/sites-available/example.com.conf
+
+<VirtualHost *:80>
+    ServerAdmin admin@example.com
+    ServerName example.com
+    ServerAlias www.example.com
+    DocumentRoot /var/www/example.com/public_html
+    ErrorLog ${APACHE_LOG_DIR}/error.log
+    CustomLog ${APACHE_LOG_DIR}/access.log combined
+</VirtualHost>
+
+sudo cp /etc/apache2/sites-available/example.com.conf /etc/apache2/sites-available/test.com.conf
+
+sudo nano /etc/apache2/sites-available/test.com.conf
+
+<VirtualHost *:80>
+    ServerAdmin admin@test.com
+    ServerName test.com
+    ServerAlias www.test.com
+    DocumentRoot /var/www/test.com/public_html
+    ErrorLog ${APACHE_LOG_DIR}/error.log
+    CustomLog ${APACHE_LOG_DIR}/access.log combined
+</VirtualHost>
+
+sudo a2ensite example.com.conf
+sudo a2ensite test.com.conf
+
+sudo a2dissite 000-default.conf
+
+sudo systemctl restart apache2
+
+sudo nano /etc/hosts
+
+127.0.0.1   localhost
+127.0.1.1   guest-desktop
+your_server_IP example.com
+your_server_IP test.com
+
+
+
+commando naar pad voor VirtualHost
+6.	cd /var/www/html/
+7.	cd /etc/Apache2/sites-available 
+8.	sudo systemctl restart apache2
+9.	sudo nano nextcloud.conf
+10.	<VirtualHost *80>
+ServerName www.nextcloud.Assengraaf.nl
+ServerAlias nextcloud.Assengraaf.nl
+DocumentRoot /var/www/html/nextcloud
+Test on client
+http://example.com
+http://test.com
+
+
+
+
+
+Behoefte analyse = behoefte van de klant
+memo- versie1 niet uitgewerkte feedback
+memo versie2 wel uitgewerkte feedback
+Geachte meneer Peen van Lint,
+
+hierbij ontvangt u de behoefte analyse. Ik heb u feedback  verwerkt. Graag ontvang ik van u akkoord om verder te kunnen met de volgende fase.
+Met vriendelijke groeten, 
+
+1	Opdracht
+Beschrijf hier de opdracht die geleid heeft tot het opstellen van deze behoefteanalyse.
+Het project wordt geleid door Salim Van Ict bedrijf SPLIT waarbij een sportschool genaamd FitNu een betere ICT-Infrasctrutuur wilt. Daarvoor ga ik aan de hand van de behoefte van de klant de eisen en de wensen van de klant opstellen. 
+
+2	Aanleiding
+Beschrijf hier de reden waarom de opdracht gegeven is voor het opstellen van deze behoefteanalyse.
+FitNu heeft geen goede gestructuureelde beveiligde infrastructuur waar naar toe de opdracht leidt op een betere ICT infrastructuur. Aan de hand van de spreadsheet weet ik hoeveel client’s ze gebruiken en hoeveel printers er zijn, doormiddel van de plattegrond weet ik waar printers aanwezig zijn en welke niet. Op deze wijze heb ik een aantal printers toegevoegd aan elke afdeling waar printers noodzakelijk zijn.
+
+
+3	Knelpunten
+Beschrijf hier de problemen die bestaan in de huidige manier van werken.
+Na het inlezen van de infrastructuur van FitNU zijn er een paar te kort komingen aan het infrastructuur. 
+	
+Knelpunten:
+ geen backups
+geen goede opslag
+geen wifi dekking
+geen goede database, geheugen en opslag
+Geen toekomst gerichte infrastructuur 
+Geen toekomst gerichte uitbereiding van geheugen
+Geen backup-server
+geen beveiliging 
+
+
+ 
+4	Eisen/wensen
+Geef hier een overzicht van de eisen en wensen. Gebruik hiervoor de MoSCoW-onderverdeling.
+Nieuwe versie gebruiken op server en Client
+-rekening houden met uitbereiding qua aansluitingen voor Client
+-Rekening houden met opslag en geheugen voor data
+- Voldoende wifi dekking (Wifi versterker)
+-meer printers op elke afdeling 1 printer en meer lease
+-de klanten beschikken over eigen privacy
+-data moet overgezet kunnen worden naar een nieuwe omgeving
+-in de toekomst hightech apparaten aan de server
+-in de toekomst aan koppeling van fitnesapparatuur aan het netwerk voor verzamelen aan gebruiksdata
+ICT-afdeling
+ backup
+ goede opslag
+ wifi dekking
+ goede database, geheugen en opslag
+toekomst gerichte infrastructuur
+ backup-server
+beveiliging aan  de netwerkinfrastructuur
+
+ 
+
+
+
+
+
+
+8	Uit te voeren werkzaamheden
+Indien er gevraagd wordt om bepaalde werkzaamheden uit te voeren, worden deze hier vermeld.
+1	Informatie Behoefte FitNu!
+2	Functioneel ontwerp
+3	Technisch ontwerp
+4	Testomgeving
+
+9	Planning
+Maak een globale planning van het hele proces tot en met het realiseren van de testomgeving. 
+Volgn.	Opdrachten	           Uitvoerder	Startdatum	Einddatum Duur	Kosten per uur
+1	Informatie Behoefte FitNu! salim	25-10-21	28-10-21  2 uur	  10,-
+2	Functioneel ontwerp	   salim	28-10-21	1-11-21	  2 uur	  10,-
+3	Technisch ontwerp	   salim	2-11-21 	4-11-21	  2 uur	  10,-
+4	Testomgeving	           salim        5-11-21	        7-11-21	  6 uur	  10,-
+
+
+
+
+Functioneel aan de hand van de behoefte de functionaliteit uitleggen, waar het voor dient
+memo
+Geachte meneer Peen van Lint,
+
+hierbij ontvangt u de behoefte analyse. Ik heb u feedback  verwerkt. Graag ontvang ik van u akkoord om verder te kunnen met de volgende fase.
+Met vriendelijke groeten,
+Salim Sallouf
+
+1 Inleiding
+Geef hier kort aan waarom dit document gemaakt is.
+Dit document is gemaakt aan de hand van de behoefte van de klant en op basis hiervan wordt een functioneel ontwerp van gemaakt en een vernieuwende systeem.
+
+2 Achtergrondinformatie
+Geef hier een beschrijving van de huidige situatie.
+FitNu! is een jonge en dynamische fitnessorganisatie dat onlangs is gestart. Het bedrijf heeft twee vestigingen geopend en de organisatie wil groeien. FitNu! wil vooral extra service bieden aan haar klanten. Daarom beschikt het bedrijf over de modernste fitness- en cardioapparatuur. De meeste apparatuur kan via een netwerk worden gekoppeld aan een centrale server. Sporters kunnen zo hun resultaten opslaan en hun vorderingen bekijken. Beide vestigingen van FitNu! zijn moderne gebouwen. Er liggen in alle kamers en hallen kabelgoten voor netwerk en elektriciteit. Kleine ruimten zijn gereserveerd voor plaatsing van netwerkapparatuur.
+
+probleemstelling= knelpunt 
+functie overzicht= de functionaliteit van je knelpuntpunten uitleggen,waar het voor gaat dienen de functionaliteit.
+
+Technische 
+memo
+Geachte P.van.Leen
+Hierbij ontvangt u de technische document met uitgewerkte feedback.
+Indien u akkoord gaat wordt het project doorgezet en kunnen we beginnen met de volgende fase.
+Met vriendelijke groeten, 
+
+inleiding
+Het sportschool Fitnu! heeft naar aanleiding van de huidige situatie hun eisen en wensen vastgesteld. 
+De functionaliteit dat daarbij hoort ga ik in een technische document uitwerken.
+Dit document wordt gemaakt aan de hand van de  functioneel ontwerp.
+
+memo
+Dns
+ip adres ubuntu-server …….
+Met deze ipaddress is er een A-record aangemaakt genaamd Lamp
+De A-record dient ervoor om ip adres om te zetten in een naam bij deze heb ik het Lamp genoemd, 
+dus op het moment dat je op internet surft en je typt lamp in dan krijg je Apache2 te zien en als je
+Lamp/phpinfo.php typt php te zien en als je Lamp/nextcloud typt dan krijg je nextcloud te zien.
+
+Ook is er een A-record aangemaakt dat gekoppeld is aan de ip adres van server2019
+
+DHCP
+Scope  192.168.70.10-192.168.70.210
+Ip plan Utrecht
+m
+ip plan Amsterdam
+scope 
+
+Services hierin alle commando's met uitleg wat het doet.
+
+
+Testrapport
+testen 
+
+powershell adds
+AD DS
+#
+# Windows PowerShell script for  AD DS Deployment
+#
+
+Import-Module ADDSDeployment
+Install-ADDSForest
+-CreateDnsDelegation:$false 
+-DatabasePath “C:\Windows\NTDS”
+-DomainMode “WinThreshold”
+-DomainName “Xprotex.com”
+-DomainNetbiosName “XPROTEX”
+-ForestMode “WinThreshold”
+-InstallDns:$true
+-LogPath “C:\Windows\NTDS”
+-NoRebootOnCompletion:$false
+-SysvolPath “C:\Windows\SYSVOL”
+-Force:$true
+
+Moscow
+Must have: een pre zonder dit project werkt niet
+
+Should have:Het heeft geen prioriteit zonder dit functioneerd het ook
+
+Could have:Waneer je tijd genoeg hebt, maar zonder dit functioneerd het ook.
+
+
+Won't have:Toekomst gerelateerd
+Bijv 
+•	In de toekomst: koppeling van hightech cardioapparatuur aan de servers.
+In de toekomst: koppeling van fitnessapparatuur aan het netwerk voor het verzamelen van gebruikersdata.
+
+
+
+
+Belangtijkste linux commando's/ met uitleg wat de commando's betekenen.
+
+ls -l) dient voor om de kijken wat er in pad zit
+getent passwd
+getent passwd |cut -d: -f1
+ls -ld) 
+stat /etc/named
+chown
+chgrp
+id
+whoami
+groups
+newgrp
+exit
+usermod - g groupname username
+chgrp -R
+
+chown user:group <file|directory>
+chown user <file|directory>
+chown :group <file|directory>
+ls -l  /etc/passwd
+
+sudo -i) om als root in te loggen
+
+id) om de huidige identiteit te zien van je huidige account
+
+chmod) permisions wijzigen
+chmod u+x filenaam
+chmod gr+r filename
+chmod a-r filname
+chmod g=rx filname
+
+
+- A regular file which may be empty, contain text or binary data.
+d A directory file which contains the names of other files and links to them.
+l A symbolic link is a file name that refers (points) to another file.
+b A block file is one that relates to a block hardware device where data is read in blocks of data.
+c A character file is one that relates to a character hardware device where data is read one byte at a time.
+p A pipe file works similar tothe pipe symbol, allowing for the output of one process to communicate to another process through the pipe file, where the output of the one process is used as input for the other process.
+s A socket file allows two processes to communicate, where both processes are allowed to either send or receive data.
+
+permissions
+r 4
+w 2
+x 1
+rwx=777
+chmod 711 filename
+~ betekent home directory
+/ betekend root directory
+umask
+/home/bob je gaan naar gebruiker bob
+pwd
+cd= kan je surfen naar mappen
+~bob je benty in bob's home directory
+.. je kunt twee stappen naar voren
+
+ls
+-a– display all files, including hidden files
+-l– long display listing
+-h– Give file sizes in human readable sizes
+-R– Recursive listing
+-S– Sort output based on file size
+-t– Sort output based on modification time
+
+–plain fileA file that isn't a special file type
+–directoryA directory file (contains other files)
+–executableA file that can be run like a program
+–symbolic linkA file that points to another file
+-d– Don’t display directory contents
+
+cp kopieren
+Use –voption to display copy process
+Use –ito prompt overwrites
+Use –nto avoid overwrites
+Use –rto copy directory structures
+
+mv verplaatsen
+-i
+-n
+-v
+
+touch file aanmaken
+rm verwijderen
+rm -i
+rm -r
+
+mkdir maakt mappen aan directory
+
+--color
+
+
+2 editors
+vi/vim
+nano
+
+ctrl X exit
+ctrl W find
+ctrl G helpt je
+
+shebang
+#! of je de script wilt gebruiken
+#! /bin/sh
+#! /usr/bin/ruby
+
+Variables
+–FOO=“hello”
+–CWD=`pwd`
+–BAR=“Hello $NAME”
+•Using (need a $):
+–$FOO
+–echo “Hello $NAME”
+
+conditionals
+if something; the     # something returns an exit code.
+do this                 if it 0, then 'do this'
+fi                      will be executed up until fi
+
+
+if something; then                        # alternative syntax, allows
+do this                                      for multiple tests and a
+elif soomething else; then do that           default option if you want
+else 
+try this
+fi
+
+
+teststest
+–f /tmp/foo    # test if file exists
+test ! –f /tmp/foo# test if file doesn’t exist
+test $A –eq1          # is $A = 1 (numeric)
+test “$B” = “Hello” # string comparison
+test $A –lt 10         # $A < 10?
+
+alternatively, [ is the same as test:
+if test –f /tmp/foo; then # it works
+if [ -f /tmp/foo ]; then     # looks much nicer!
+
+
+Case
+case ”$GREETING" in
+hello|hi)
+echo "hello yourself"
+;;
+goodbye)
+echo "nice to have met you"
+echo "I hope to see you again"
+;;
+*)
+echo "I didn't understand that"
+esac
+
+
+Loops
+
+the for loops
+
+Operates over a fixed set of items or a glob
+NAMES=“Alice Bob Charlie”
+for N in $NAMES; do
+echo “Hello $N”
+done
+for FILE in *; do
+ls –l $FILE
+done
+
+While loops
+
+Tests the loop condition each time
+while [ ! –f /tmp/foo ]; do
+try_to_make_foo# makes /tmp/foo on success
+sleep 1  # wait 1 sec
+done
+•Used when the number of loops is unknown or changes each loop
+
+
+
+Nieuwe eisen•
+Aanpassen index.html (Apache default webpage)
+•Maken IP plan•
+Linux server een vaste IP adres•
+Werkstation via DHCP (Windows server)•
+Nextcloudvia DNS (A record aanmaken)•
+Uitleggen de commandsdie je hebt gebruikt 
+* Archiveren van gemaakte bestanden (directory structuur en zip file van maken) als zipbestand inleveren
+
+
+Technisch Ontwerp Services
+•IP -PLAN•
+DNS•
+DHCP•
+LAMP•
+Apache•
+MySQL•
+PHP•
+Nextcloud
+•Database query
+•AD•Groepen•
+
+Mappenstructuur•
+map groep leden rechten
+
+Enz.
+
+Basic Cisco commands
+•Enter•
+Enable•
+Sh run•Sh vlan
+•Sh ipint brief•
+Configt
+•Exit
+
+                                                                    
+ipplan in Technische ontwerp
+                ip adrres       subnet          gateway                  0-255 1e en laatste mag niet gebruikt worden
+server linux    192.168.10.2    255.255.255.0   192.168.10.1            1-254
+microsoft server
+printer
+wifi                                                                      1 gereserveerd voor gateway
+pin automaat                                                              1 t/m 10 servers
+werkstation                                                               11 t/m 20 werkstations
+                                                                          21-30 printers
+                                                                          31-40 pin automaat
+6/7 bij probleemstelling
+Technisch Ontwerp
+Virtual Host nextcloud.Xprotex.eu
+Xprotex.eu zelfde IP
+
+IP PLAn 192.168.2.2
+Subnet Mask 255.255.255.0
+gateway 192.168.2.1
+range start ip 192.168.2.1
+end 192.168.2.14
+exclusion 192.168.2.13 en 192.168.2.14
+Mac adress intel network opdracht1 bestand altijd draad kiezen
+
+									  
+									  
+mappenstructuur in to
+map groep leden rechten
+
+subnet:
+/8 255.0.0.0
+/16 255.255.0.0
+/24 255.255.255.0
+/25 255.255.255.128
+/26 255.255.255.192
+/27 255.255.255.224
+/28 255.255.255.240
+/29 255.255.255.248
+/30 255.255.255.252
+
+
+Apache activeren (sudo systemctl start apache2)
+Mysql activeren (sudo systemctl start mysql)
+Php activeren (sudo systemctl start php)
+op client nextcloud destop installeren
+
+7.1 Internet- en firewallbeveiliging
+Alle medewerkers hebben toegang tot internet. De volgende poorten dienen te zijn geopend.
+•	Interne poorten	80 (http)
+	443 (https)
+	53 (dns)
+	
+	OU-structuur:
+	onder elkaar met daarnaast de groepen structueren.
