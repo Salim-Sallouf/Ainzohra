@@ -243,7 +243,7 @@ nextcloud
 
 1.	sudo apt-get install apache2 mysql-server -y
 Hiermee installeer je nextcloud
-2.	sudo apt-get install php zip libapache2-mod-php php-gd php-json php-mysql php-curl php-mbstring php-intl php-imagick php-xml php-zip php-mysql php-bcmath php-gmp -y
+2.	s php-bcmath php-gmp -yudo apt-get install php zip libapache2-mod-php php-gd php-json php-mysql php-curl php-mbstring php-intl php-imagick php-xml php-zip php-mysql
 hiermee installeer je nextxloud configuratie
 3.	sudo mysql_secure_installation
 dit is voor de secOure
