@@ -1015,10 +1015,91 @@ sleep 1  # wait 1 sec
 done
 •Used when the number of loops is unknown or changes each loop
 
+
+
+Overzicht testomgeving
+
+Hierbij word er gebruik gemaakt van 3 kant en klare virtuele machines. 1 Windows server 2016,
+1 Windows 10 werkstation en een ubuntu server 18.0. De ubuntu server is al voorgeïnstalleerd 
+met een apache webserver de apache2 functie is aan het begin niet actief die word in het testproces geactiveerd dit heeft ook betrekking tot de Mariadb functie en php.
+De Windows server 2016 is
+klaargezet met een dhcp server, dns, 
+er is al een active directory klaargezet met deze machines inclusief de werkstation worden de testprocessen verricht elk proces krijgt een uitleg inclusief een bewijsverklaring indien de desbetreffende functie geslaagd is of niet.
 	
+
+
 	
-	
-	
+Testscenario
+Er word hier gebruik gemaakt van een ubuntuserver 18.0 , Windows server 2016 en een Windows 10 consumer edition. Apache2 word eerst geactiveerd en getest.
+Deze test word uitgevoerd op de ubuntuserver door middel van 2 verschillende commando's 
+Testscenario om apache2 te testen
+
+
+
+
+Testinput
+Hierbij word gebruik gemaakt van 2 commando's sudosystemctl start apache2 (om apache2 te activeren) . 
+Sudo systemctl status apache2 (hiermee word de status weergeven van apache2) . 
+
+Verwachte output 
+Er word verwacht om uiteindelijk via de webbrowser van de Windows 10 werkstation op de webpage van apache te komen(https:jouwserverip)
+
+
+
+
+
+
+1.1. Functie x
+1.1.1. Te testen functionaliteit
+----Beschrijving van de functionaliteit (vaak genoemd in functioneel ontwerp)
+Apache is een webbserver die gebruikt kan worden voor webpagina’ je moet uitleggen wat je met de functie gaat doen
+
+
+1.1.2. Test scenario
+Hoe gaat getest worden of de functie werkt?
+----Vanuit Linux Ubuntu proberen we apache server te testen met behulp van commando’s en de client verbinden met de webserver je gaat uitleggen hoe je gaat testen binnen je server omgeving
+
+1.1.3. Test input
+Welke test-data gaan gebruikt worden?
+---Sudo systemctl status apache2 · http://192.168.61.151
+je legt uit welke onderdelen je gaat documenteren dus niet alleen ip maar maak er een verhaaltje van
+
+1.1.4. Verwachte werking\output
+Welk resultaat verwacht je van de functie?
+----Ik verwacht dat de apache webserver volledig werkend is wanneer ik mijn ubuntu ip adres invoer op mijn webbrowser.[.[ dit is prima
+
+1.1.5. Werkelijke werking\output
+Wat is het resultaat van de test?
+
+1.2.6. Conclusie test
+Werkt de functie zoals verwacht? Indien van niet geef aan wat fout is.
+----PHP heb ik geinstalleerd en hij weergeeft de testpagina duidelijk zichtbaar
+waarmee ik nu verder met de functionaliteit van php verder kan gaan.
+
+
+4.	Eind conclusie testen
+Beschrijf hier de conclusie die getrokken kan worden na het uitvoeren van de tests
+----ik heb voor dit project gebruik gemaakt van 2 verschillende  virtual machines deze twee machines draaiden linux en windows.
+Ik gebruikte linux om een private cloud omgeving op te kunnen zetten om er zo voor te zorgen dat alles beveiligd wordt en voor deze dienst gebruikte ik nextcloud omdat het gratis is en stabiel werkt.
+Ik gebruikte ook windows omdat ik een a record moest aan maken binnen het netwerk van windows om er voor te zorgen dat mensen binnen het netwerk geen ip te laten gebruiken maar een url 
+
+
+2.	Test omgeving
+2.1.	Overzicht test omgeving
+Beschrijf hier hoe de testomgeving opgebouwd moet gaan worden.
+----Je gebruikt  2 virtuele machines om de connectie vsn de twee  servers  te kunnen testen ik gebruik een linux server om de private cloud op te kunnen hosten
+en windows gebruik ik  om een a record aan te maken zodat ik een url kan gebruiken in plaats van een ip address.
+Planning opzet test omgeving
+Maak hier een planning voor het opzetten van de test omgeving. 
+
+
+
+
+
+
+
+
+
 	
 	
 	
