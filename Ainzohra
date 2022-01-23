@@ -1015,13 +1015,76 @@ sleep 1  # wait 1 sec
 done
 •Used when the number of loops is unknown or changes each loop
 
+ikga apache 	
 	
+
+Overzicht testomgeving
+Hierbij word er gebruik gemaakt van 3 kant en klare virtuele machines.
+1 Windows server 2016, 1 Windows 10 werkstation en een ubuntu server 18.0. 
+De ubuntu server is al voorgeïnstalleerd met een apache webserver de apache2 functie is aan het begin niet actief die word in het testproces geactiveerd dit heeft
+ook betrekking tot de Mariadb functie en php. De Windows server 2016 is   
+klaargezet met een dhcp server, dns, er is al een active directory klaargezet met deze machines inclusief de werkstation worden de testprocessen verricht 
+elk proces krijgt een uitleg inclusief een bewijsverklaring indien de desbetreffende functie geslaagd is of niet.
+
+
+Testscenario
+----Er word hier gebruik gemaakt van een ubuntuserver 18.0 , Windows server 2016 en een Windows 10 consumer edition. Apache2 word eerst geactiveerd en getest.
+Deze test word uitgevoerd op de ubuntuserver door middel van 2 verschillende commando's 
+Testscenario om apache2 te testen
+
+Testinput
+----Hierbij word gebruik gemaakt van 2 commando's sudosystemctl start apache2 (om apache2 te activeren) . 
+Sudo systemctl status apache2 (hiermee word de status weergeven van apache2) . 
+
+Verwachte output 
+----Er word verwacht om uiteindelijk via de webbrowser van de Windows 10 werkstation op de webpage van apache te komen
+(https:jouwserverip)
+
+
+
+1.1. Installatie openSUSE
+1.1.1. Te testen functionaliteit
+Beschrijving van de functionaliteit (vaak genoemd in functioneel ontwerp)
+Apache is een webbserver die gebruikt kan worden voor webpagina’ je moet uitleggen wat je met de functie gaat doen
+1.1.2. Test scenario
+----Hoe gaat getest worden of de functie werkt?
+Vanuit Linux Ubuntu proberen we apache server te testen met behulp van commando’s en de client verbinden met de webserver je gaat uitleggen hoe je gaat testen binnen je server omgeving
+1.1.3. Test input
+----Welke test-data gaan gebruikt worden?
+Sudo systemctl status apache2 · http://192.168.61.151
+je legt uit welke onderdelen je gaat documenteren dus niet alleen ip maar maak er een verhaaltje van
+1.1.4. Verwachte werking\output
+----Welk resultaat verwacht je van de functie?
+Ik verwacht dat de apache webserver volledig werkend is wanneer 
+ik mijn ubuntu ip adres invoer op mijn webbrowser.[.[ dit is prima
+1.1.5. Werkelijke werking\output
+----Wat is het resultaat van de test?
 	
-	
-	
-	
-	
-	
-	
-	
+
+1.2. Installatie werkstation Windows10
+1.2.1. Te testen functionaliteit
+----Nagaan of Windows 10 correct geïnstalleerd is, het werkstation moet kunnen pingen naar de server.
+1.2.2. Test scenario
+----In een virtuele omgeving in VirtualBox op de Windows 10 client met de commandprompt.
+1.2.3. Test input
+----Pingen vanuit het werkstation naar de openSUSE server met de commando ping 10.0.2.4.
+1.2.4. Verwachte werking\output
+----Dat het werkstation kan pingen naar de server.
+
+
+1.3. Installatie Apache
+1.3.1. Te testen functionaliteit
+----De server moet kunnen aantonen dat de Apache service draait en dat vanuit het werkstation de Apache testpagina bereikt kan worden.
+1.3.2. Test scenario
+----In een virtuele omgeving in VirtualBox op de openSUSE server op de terminal.
+En op de Windows 10 client via de webbrowser.
+1.3.3. Test input
+----Op de server met de commando systemctl status apache2.
+Op het werkstation via de webbrowser naar het adres 10.0.2.4 browsen
+1.3.4. Verwachte werking\output
+----Dat er wordt aangetoond op de server dat de service Apache running is.
+Dat de testpagina wordt weergeven in de webbrowser op het werkstation.
+1.3.6. Conclusie test
+----Apache is geïnstalleerd, in de server wordt weergeven dat de service running is 
+en via het werkstation is de testpagina te bereiken.	
 	
